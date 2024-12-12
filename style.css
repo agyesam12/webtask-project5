@@ -1,5 +1,6 @@
 .div-one,.div-two,.div-three{
     height:300px;
+    display: inline-block;
 }
 
 footer{
