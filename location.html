@@ -3,56 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real time Location tracker leaflet.js</title>
+    <title>Real-Time Location Tracker with Leaflet.js</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        body{
-            margin:0;
-            padding: 0;
-        }
-        #map{
-            width:100%;
-            height:100vh;
-        }
+        body { margin: 0; padding: 0; }
+        #map { width: 100%; height: 100vh; }
     </style>
 </head>
 <body>
-  <div id = "map"></div>  
+    <div id="map"></div>
 
-   
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([5.6037, -0.1870], 13); // Accra, Ghana
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+        } else {
+            setInterval(() => {
+                navigator.geolocation.getCurrentPosition(updateLocation);
+            }, 5000);
+        }
+
+        var marker, circle;
+
+        function updateLocation(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var accuracy = position.coords.accuracy;
+
+            if (marker) map.removeLayer(marker);
+            if (circle) map.removeLayer(circle);
+
+            marker = L.marker([lat, lng]).addTo(map);
+            circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+
+            var group = L.featureGroup([marker, circle]);
+            map.fitBounds(group.getBounds());
+
+            console.log(`Latitude: ${lat}, Longitude: ${lng}, Accuracy: ${accuracy}m`);
+        }
+    </script>
 </body>
 </html>
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script>
-var map = L.map('map').setView([5.6037, -0.1870], 12);
-var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'});
-osm.addTo(map);
-
-if(!navigator.geolocation){
-    console.log("Your browser doesn't support geolocation feature");
-}
-else{
-    setInterval(()=>{
-        navigator.geolocation.getCurrentPosition(getPosition)
-    }, 5000);
-}
-var marker,circle;
-function getPosition(position){
-    var lat = position.coords.latitude;
-    var long = position.coords.longitude;
-
-    var accuracy = position.coords.accuracy;
-    if(marker){
-        map.removeLayer(marker);
-    }
-    if(circle){
-        map.removeLayer(circle);
-    }
-    marker = L.marker([lat, long]);
-    circle = L.circle([lat, long], {radius:accuracy});
-
-    var featureGroup = L.featureGroup([marker, circle]).addTo(map);
-    map.fitBounds(featureGroup.getBounds());
-    console.log("Your coordinates is lat :" + lat  + "long" + long + "Accuracy" + accuracy);
-}
-</script>
