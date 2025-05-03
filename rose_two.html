@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello You</h1>
+    <div>Num3: <input type="text" id="num1"></div>
+    <div>Num4: <input type="text" id="num2"></div>
+    <button id="callButton">Call</button>
+
+    <h2>Result: <span id="result"></span></h2>
+
+    <script type="text/javascript">
+        function Call() {
+            let n1 = document.getElementById('num1').value.trim();
+            let n2 = document.getElementById('num2').value.trim();
+
+            // Convert inputs to numbers
+            let num1 = Number(n1);
+            let num2 = Number(n2);
+
+            // Validate if inputs are actually numbers
+            if (isNaN(num1) || isNaN(num2) || n1 === "" || n2 === "") {
+                document.getElementById('result').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            let sum = num1 + num2;
+
+            // Display result on the page
+            document.getElementById('result').innerText = "The sum is: " + sum;
+        }
+
+        // Attach event listener to the button
+        document.getElementById("callButton").addEventListener("click", Call);
+    </script>
+</body>
+</html>
