@@ -39,7 +39,8 @@ else{
 var marker,circle;
 function getPosition(position){
     var lat = position.coords.latitude;
-    var long = position.coords.long;
+    var long = position.coords.longitude;
+
     var accuracy = position.coords.accuracy;
     if(marker){
         map.removeLayer(marker);
